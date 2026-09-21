@@ -1,0 +1,129 @@
+---
+description: Backend learning roadmap — Node, Express→Fastify, Postgres/Neon, JWT, deploy. Prefer clear-English video sources.
+alwaysApply: true
+---
+
+# Backend Learning Resources
+
+> Single source of truth cho lộ trình học BE (crash overview bằng video → chuyên sâu khi làm project).
+> Stack mục tiêu production (LandSaigon ERP): **Node.js + Fastify + TypeScript + PostgreSQL (Neon) + Drizzle ORM + JWT (Access/Refresh) + Zod + Resend (Email) + Render**.
+> Học khái niệm: **Express (PedroTech)** trước → map sang **Fastify** khi ship.
+
+## 0. Nguyên tắc chọn nguồn học
+
+- Ưu tiên tiếng Anh **dễ nghe / giọng chuẩn** (US/UK hoặc creator dễ follow như PedroTech).
+- **Không** dùng khóa dài accent Ấn Độ khó nghe làm nguồn chính — chỉ tham khảo text/docs nếu cần.
+- Express = đường học (tutorial nhiều). Fastify = đường ship (API mới + TS).
+- Xem video để có **bức tranh tổng thể**; code sâu khi vào project thật.
+
+## 1. Stack mục tiêu (Production ERP LandSaigon)
+
+```text
+Mobile:                React Native Expo + TypeScript
+OTA:                   EAS Update
+Backend:               Node (Fastify) + TypeScript
+Database & ORM:        PostgreSQL (Neon) + Drizzle ORM (Migrations)
+Auth & Security:       JWT (Access + Refresh Token) + argon2 + Zod
+Email Service:         Resend (Free tier 3.000 email/tháng)
+Deploy API:            Render (hoặc Railway)
+```
+
+### Chi phí tham chiếu (app nội bộ ~10 user)
+
+| Hạng mục | Phí | Ghi chú |
+| --- | --- | --- |
+| Expo SDK / EAS Free | $0 | Quota build/update đủ app nhỏ |
+| Neon Postgres | $0 | Free tier 0.5GB đủ cho data text ERP |
+| Render Web Service | $0–7/tháng | Free sẽ bị cold start (ngủ đông). Lên production nên dùng gói $7 |
+| Resend Email | $0 | Gửi email thông báo booking/nhắc lịch |
+
+## 2. Express vs Fastify — quyết định
+
+| | Express | Fastify |
+| --- | --- | --- |
+| Học / tutorial | Nhiều, dễ vào | Ít full-course hơn |
+| TypeScript | OK, type thủ công nhiều | Thân thiện TS hơn |
+| Validation | Tự gắn Zod/Yup | Schema / Zod plugin first-class |
+| Logging | Tự gắn | Pino built-in |
+| Project mới | Legacy / team đã Express | **Nên chọn (Greenfield)** |
+
+**Mapping khi học Express rồi chuyển Fastify:**
+
+| Express | Fastify |
+| --- | --- |
+| `app.get/post` | `app.get/post` |
+| middleware | `preHandler` / hook |
+| `jsonwebtoken` | `@fastify/jwt` |
+| Prisma / Sequelize | **Drizzle ORM** |
+
+## 3. Thứ tự học khái niệm (bắt buộc theo bước)
+
+```text
+0. REST/HTTP phía server (request → route → JSON)
+1. Node.js (npm, env, async/await, modules)
+2. Framework API — Express trước (học) hoặc Fastify thẳng
+3. SQL + PostgreSQL (CRUD, PK, quan hệ 1-n cho Customer/Booking)
+4. Neon DB + Drizzle ORM (Tạo schema và chạy Migration)
+5. Auth: Hash Password + JWT (Access Token ngắn hạn + Refresh Token dài hạn)
+6. RBAC (Role-based access control): Phân quyền Sale vs Manager
+7. Validation: Zod
+8. Tích hợp API bên thứ 3: Resend để gửi Email
+9. Deploy: Render (listen 0.0.0.0, env secrets)
+```
+
+## 4. Nguồn video chính (tiếng Anh dễ nghe)
+
+### 4.1 Xương sống — xem trước
+
+**PedroTech — Backend Complete Course** (~3h)
+- Link: https://www.youtube.com/watch?v=g09PoiCob4Y
+- Stack trong video: Node · Express · JWT · PostgreSQL · Prisma · Zod · Neon
+
+**Timestamps (học đúng phần):**
+
+| Time | Phần | Ưu tiên |
+| --- | --- | --- |
+| 00:01:38 | Setup NodeJS Server | Xem |
+| 00:20:38 | Routes | Xem |
+| 00:30:38 | PostgreSQL | **Quan trọng (Hiểu DB, thay Prisma bằng Drizzle sau)** |
+| 01:03:38 | JWT Authentication | **Quan trọng nhất** |
+| 01:48:38 | Middlewares | **Quan trọng** |
+| 02:11:00 | Validation using Zod | **Quan trọng** |
+| 02:22:38 | Deploy Hostinger | Skip (Dùng Render) |
+
+### 4.2 Playlist PedroTech — Các khái niệm nâng cao bắt buộc
+
+Playlist: `NodeJS / Express Tutorials` (PedroTech)
+
+| Video | Link / tìm theo title | Vì sao |
+| --- | --- | --- |
+| Building A Rest API with NodeJS and ExpressJS | Trong playlist | REST cơ bản nếu còn yếu |
+| Folder Structure for APIs | Trong playlist | Khi scaffold project |
+| How To Configure TypeScript in NodeJS | Trong playlist | Stack production dùng TS |
+| **Roles/Authorization** | Trong playlist | **Bắt buộc cho ERP (Manager vs Sale)** |
+| **Refresh Tokens** | Tìm trên kênh | **Bắt buộc để Sale không bị văng đăng nhập** |
+
+### 4.3 Fastify & Drizzle (Map sang stack ship)
+
+| Nguồn | Link / Keyword | Ghi chú |
+| --- | --- | --- |
+| Fastify + TypeScript REST API | https://www.youtube.com/watch?v=LMoMHP44-xM | Cấu trúc Fastify cơ bản |
+| Drizzle ORM Crash Course | Tìm YouTube: "Drizzle ORM Postgres" | Học cách define schema & migration |
+| Resend Email Node.js | Đọc Docs: resend.com/docs | Tích hợp gửi mail |
+
+## 5. Checklist “đã sẵn sàng code project LandSaigon”
+
+Trả lời được ≤60s từng câu:
+1. Node khác browser chỗ nào?
+2. `POST /login` phía server làm gì? Refresh token lưu ở đâu an toàn trên mobile?
+3. Middleware kiểm tra Role (Sale/Manager) hoạt động ở bước nào của Request?
+4. JWT ai cấp? Client gửi lại thế nào (`Authorization: Bearer`)?
+5. Drizzle Migration dùng để làm gì khi thay đổi DB schema?
+6. Deploy Render cần env nào (`DATABASE_URL`, `JWT_SECRET`, `RESEND_API_KEY`)?
+
+## 6. Khi AI hỗ trợ học / code trong repo này
+
+- Nhắc thứ tự: **PedroTech Express trước → Fastify + Drizzle khi scaffold API thật**.
+- Luôn nhớ context: **App ERP BĐS cho 10 user (Sale/Manager)**.
+- Khi làm Auth, bắt buộc implement **Refresh Token** và **RBAC**.
+- Giữ honest gap: mới BE → nói “đang map từ Express tutorial sang Fastify production”, không over-claim.
