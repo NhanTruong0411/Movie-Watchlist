@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon src/server.js",
-    "prisma:update": "npx prisma contract emit && npx prisma db update"
+    "prisma:update": "npx prisma contract emit && npx prisma db update",
+    "seed:movies": "node src/prisma/seed.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +17,7 @@
     "@prisma/client": "^7.10.0",
     "@prisma/orm-postgres": "^8.0.0-rc.11",
     "bcryptjs": "^3.0.3",
+    "cors": "^2.8.6",
     "dotenv": "^18.0.1",
     "express": "^5.2.1",
     "google-auth-library": "^11.1.0",

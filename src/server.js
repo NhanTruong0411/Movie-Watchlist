@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors";
 import { config } from "dotenv";
 import { connectDB, disconnectDB } from "./config/db.js";
 import movieRoutes from "./routes/movieRoutes.js";
@@ -8,6 +9,25 @@ config();
 
 const app = express();
 const PORT = 5001;
+const allowedOrigins = (process.env.CORS_ORIGINS ?? "http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+// Browser on another origin must be listed here before it can send cookies.
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+        return;
+      }
+
+      callback(null, false);
+    },
+    credentials: true,
+  })
+);
 
 // Body parsing Middleware
 app.use(express.json());
