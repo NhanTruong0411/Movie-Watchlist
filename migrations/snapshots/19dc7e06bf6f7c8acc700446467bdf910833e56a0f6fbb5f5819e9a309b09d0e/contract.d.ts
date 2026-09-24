@@ -34,9 +34,9 @@ import type {
 } from '@prisma/orm-postgres/contract/types';
 
 export type StorageHash =
-  StorageHashBase<'64b40f0e305dae3e3d3df1c001ed60f05d183fd614cae105b020103bcc2064b8'>;
+  StorageHashBase<'19dc7e06bf6f7c8acc700446467bdf910833e56a0f6fbb5f5819e9a309b09d0e'>;
 export type ExecutionHash =
-  ExecutionHashBase<'49487eda3b4e19c661802280a473dd9a55a127c9d03ff695bb8ba2dab9ce3cbb'>;
+  ExecutionHashBase<'7455f1f9e2846bd57090950898b958aa6227784ae4c28bcf9acc395a590312a4'>;
 export type ProfileHash =
   ProfileHashBase<'3916f444a8a17ad749191acf9e08dad97d1a327b88c2f1d45d12f240296aa8b2'>;
 
@@ -263,13 +263,6 @@ export type FieldOutputTypes = {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly UserGroup: {
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
-      readonly ownerId: CodecTypes['pg/text@1']['output'];
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    };
     readonly WatchlistItem: {
       readonly id: CodecTypes['pg/text@1']['output'];
       readonly userId: CodecTypes['pg/text@1']['output'];
@@ -302,13 +295,6 @@ export type FieldInputTypes = {
       readonly email: CodecTypes['pg/text@1']['input'];
       readonly password: CodecTypes['pg/text@1']['input'] | null;
       readonly googleId: CodecTypes['pg/text@1']['input'] | null;
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
-    };
-    readonly UserGroup: {
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
-      readonly ownerId: CodecTypes['pg/text@1']['input'];
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
@@ -347,13 +333,6 @@ export type StorageColumnTypes = {
       readonly password: CodecTypes['pg/text@1']['output'] | null;
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     };
-    readonly userGroup: {
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-      readonly id: CodecTypes['pg/text@1']['output'];
-      readonly name: CodecTypes['pg/text@1']['output'];
-      readonly ownerId: CodecTypes['pg/text@1']['output'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    };
     readonly watchlistItem: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
       readonly id: CodecTypes['pg/text@1']['output'];
@@ -389,13 +368,6 @@ export type StorageColumnInputTypes = {
       readonly password: CodecTypes['pg/text@1']['input'] | null;
       readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
     };
-    readonly userGroup: {
-      readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
-      readonly id: CodecTypes['pg/text@1']['input'];
-      readonly name: CodecTypes['pg/text@1']['input'];
-      readonly ownerId: CodecTypes['pg/text@1']['input'];
-      readonly updatedAt: CodecTypes['pg/timestamptz-string@1']['input'];
-    };
     readonly watchlistItem: {
       readonly createdAt: CodecTypes['pg/timestamptz-string@1']['input'];
       readonly id: CodecTypes['pg/text@1']['input'];
@@ -419,15 +391,6 @@ export namespace Models {
     createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
     updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
     readonly [RelationKeys]?: never;
-  };
-  export type public_UserGroup = {
-    id: CodecTypes['pg/text@1']['output'];
-    name: CodecTypes['pg/text@1']['output'];
-    ownerId: CodecTypes['pg/text@1']['output'];
-    createdAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    updatedAt: CodecTypes['pg/timestamptz-string@1']['output'];
-    owner: public_User;
-    readonly [RelationKeys]?: 'owner';
   };
   export type public_Movie = {
     id: CodecTypes['pg/text@1']['output'];
@@ -462,7 +425,6 @@ export namespace Models {
 export declare const models: {
   public: {
     User: Models.public_User;
-    UserGroup: Models.public_UserGroup;
     Movie: Models.public_Movie;
     WatchlistItem: Models.public_WatchlistItem;
   };
@@ -616,60 +578,6 @@ type ContractBase = Omit<
               indexes: readonly [];
               foreignKeys: readonly [];
             };
-            readonly userGroup: {
-              columns: {
-                readonly id: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly name: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly ownerId: {
-                  readonly nativeType: 'text';
-                  readonly codecId: 'pg/text@1';
-                  readonly nullable: false;
-                };
-                readonly createdAt: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                  readonly default: { readonly kind: 'function'; readonly expression: 'now()' };
-                };
-                readonly updatedAt: {
-                  readonly nativeType: 'timestamptz';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                  readonly nullable: false;
-                };
-              };
-              primaryKey: { readonly columns: readonly ['id'] };
-              uniques: readonly [];
-              indexes: readonly [
-                {
-                  readonly name: 'userGroup_ownerId_idx_e2d0c1ef';
-                  readonly prefix: 'userGroup_ownerId_idx';
-                  readonly columns: readonly ['ownerId'];
-                  readonly unique: false;
-                },
-              ];
-              foreignKeys: readonly [
-                {
-                  readonly source: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'userGroup';
-                    readonly columns: readonly ['ownerId'];
-                  };
-                  readonly target: {
-                    readonly namespaceId: 'public' & NamespaceId;
-                    readonly tableName: 'user';
-                    readonly columns: readonly ['id'];
-                  };
-                },
-              ];
-            };
             readonly watchlistItem: {
               columns: {
                 readonly id: {
@@ -779,7 +687,6 @@ type ContractBase = Omit<
   readonly targetFamily: 'sql';
   readonly roots: {
     readonly user: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-    readonly userGroup: { readonly namespace: 'public' & NamespaceId; readonly model: 'UserGroup' };
     readonly movie: { readonly namespace: 'public' & NamespaceId; readonly model: 'Movie' };
     readonly watchlistItem: {
       readonly namespace: 'public' & NamespaceId;
@@ -931,58 +838,6 @@ type ContractBase = Omit<
               };
             };
           };
-          readonly UserGroup: {
-            readonly fields: {
-              readonly id: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly name: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly ownerId: {
-                readonly nullable: false;
-                readonly type: { readonly kind: 'scalar'; readonly codecId: 'pg/text@1' };
-              };
-              readonly createdAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-              readonly updatedAt: {
-                readonly nullable: false;
-                readonly type: {
-                  readonly kind: 'scalar';
-                  readonly codecId: 'pg/timestamptz-string@1';
-                };
-              };
-            };
-            readonly relations: {
-              readonly owner: {
-                readonly to: { readonly namespace: 'public' & NamespaceId; readonly model: 'User' };
-                readonly cardinality: 'N:1';
-                readonly nullable: false;
-                readonly on: {
-                  readonly localFields: readonly ['ownerId'];
-                  readonly targetFields: readonly ['id'];
-                };
-              };
-            };
-            readonly storage: {
-              readonly table: 'userGroup';
-              readonly namespaceId: 'public';
-              readonly fields: {
-                readonly id: { readonly column: 'id' };
-                readonly name: { readonly column: 'name' };
-                readonly ownerId: { readonly column: 'ownerId' };
-                readonly createdAt: { readonly column: 'createdAt' };
-                readonly updatedAt: { readonly column: 'updatedAt' };
-              };
-            };
-          };
           readonly WatchlistItem: {
             readonly fields: {
               readonly id: {
@@ -1129,23 +984,6 @@ type ContractBase = Omit<
           readonly ref: {
             readonly namespace: 'public';
             readonly table: 'user';
-            readonly column: 'updatedAt';
-          };
-          readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
-          readonly onUpdate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
-        },
-        {
-          readonly ref: {
-            readonly namespace: 'public';
-            readonly table: 'userGroup';
-            readonly column: 'id';
-          };
-          readonly onCreate: { readonly kind: 'generator'; readonly id: 'uuidv4' };
-        },
-        {
-          readonly ref: {
-            readonly namespace: 'public';
-            readonly table: 'userGroup';
             readonly column: 'updatedAt';
           };
           readonly onCreate: { readonly kind: 'generator'; readonly id: 'timestampNow' };
