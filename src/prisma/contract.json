@@ -12,10 +12,6 @@
       "model": "User",
       "namespace": "public"
     },
-    "userGroup": {
-      "model": "UserGroup",
-      "namespace": "public"
-    },
     "watchlistItem": {
       "model": "WatchlistItem",
       "namespace": "public"
@@ -271,84 +267,6 @@
               },
               "namespaceId": "public",
               "table": "user"
-            }
-          },
-          "UserGroup": {
-            "fields": {
-              "createdAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              },
-              "id": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "name": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "ownerId": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/text@1",
-                  "kind": "scalar"
-                }
-              },
-              "updatedAt": {
-                "nullable": false,
-                "type": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "kind": "scalar"
-                }
-              }
-            },
-            "relations": {
-              "owner": {
-                "cardinality": "N:1",
-                "nullable": false,
-                "on": {
-                  "localFields": [
-                    "ownerId"
-                  ],
-                  "targetFields": [
-                    "id"
-                  ]
-                },
-                "to": {
-                  "model": "User",
-                  "namespace": "public"
-                }
-              }
-            },
-            "storage": {
-              "fields": {
-                "createdAt": {
-                  "column": "createdAt"
-                },
-                "id": {
-                  "column": "id"
-                },
-                "name": {
-                  "column": "name"
-                },
-                "ownerId": {
-                  "column": "ownerId"
-                },
-                "updatedAt": {
-                  "column": "updatedAt"
-                }
-              },
-              "namespaceId": "public",
-              "table": "userGroup"
             }
           },
           "WatchlistItem": {
@@ -656,74 +574,6 @@
                 }
               ]
             },
-            "userGroup": {
-              "columns": {
-                "createdAt": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "default": {
-                    "expression": "now()",
-                    "kind": "function"
-                  },
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                },
-                "id": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": false
-                },
-                "name": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": false
-                },
-                "ownerId": {
-                  "codecId": "pg/text@1",
-                  "nativeType": "text",
-                  "nullable": false
-                },
-                "updatedAt": {
-                  "codecId": "pg/timestamptz-string@1",
-                  "nativeType": "timestamptz",
-                  "nullable": false
-                }
-              },
-              "foreignKeys": [
-                {
-                  "onDelete": "cascade",
-                  "source": {
-                    "columns": [
-                      "ownerId"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "userGroup"
-                  },
-                  "target": {
-                    "columns": [
-                      "id"
-                    ],
-                    "namespaceId": "public",
-                    "tableName": "user"
-                  }
-                }
-              ],
-              "indexes": [
-                {
-                  "columns": [
-                    "ownerId"
-                  ],
-                  "name": "userGroup_ownerId_idx_e2d0c1ef",
-                  "prefix": "userGroup_ownerId_idx",
-                  "unique": false
-                }
-              ],
-              "primaryKey": {
-                "columns": [
-                  "id"
-                ]
-              },
-              "uniques": []
-            },
             "watchlistItem": {
               "checks": [
                 {
@@ -847,7 +697,14 @@
                   "id"
                 ]
               },
-              "uniques": []
+              "uniques": [
+                {
+                  "columns": [
+                    "userId",
+                    "movieId"
+                  ]
+                }
+              ]
             }
           },
           "valueSet": {
@@ -866,10 +723,10 @@
         "kind": "postgres-schema"
       }
     },
-    "storageHash": "64b40f0e305dae3e3d3df1c001ed60f05d183fd614cae105b020103bcc2064b8"
+    "storageHash": "9a6eb5193c1135a24adbfbfdc2c4231c0cf3386e0bf721619317b5007cefb109"
   },
   "execution": {
-    "executionHash": "49487eda3b4e19c661802280a473dd9a55a127c9d03ff695bb8ba2dab9ce3cbb",
+    "executionHash": "7455f1f9e2846bd57090950898b958aa6227784ae4c28bcf9acc395a590312a4",
     "mutations": {
       "defaults": [
         {
@@ -922,32 +779,6 @@
             "column": "updatedAt",
             "namespace": "public",
             "table": "user"
-          }
-        },
-        {
-          "onCreate": {
-            "id": "uuidv4",
-            "kind": "generator"
-          },
-          "ref": {
-            "column": "id",
-            "namespace": "public",
-            "table": "userGroup"
-          }
-        },
-        {
-          "onCreate": {
-            "id": "timestampNow",
-            "kind": "generator"
-          },
-          "onUpdate": {
-            "id": "timestampNow",
-            "kind": "generator"
-          },
-          "ref": {
-            "column": "updatedAt",
-            "namespace": "public",
-            "table": "userGroup"
           }
         },
         {

@@ -1,10 +1,11 @@
-import express from "express";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import { config } from "dotenv";
+import express from "express";
 import { connectDB, disconnectDB } from "./config/db.js";
-import movieRoutes from "./routes/movieRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
-
+import movieRoutes from "./routes/movieRoutes.js";
+import watchlistRoutes from "./routes/watchlistRoutes.js";
 config();
 
 const app = express();
@@ -29,13 +30,15 @@ app.use(
   })
 );
 
-// Body parsing Middleware
+// Body and cookie parsing. cookie-parser turns the Cookie header into req.cookies.
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // API Routes
 app.use("/movies", movieRoutes);
 app.use("/auth", authRoutes);
+app.use("/watchlist", watchlistRoutes);
 
 let server;
 
