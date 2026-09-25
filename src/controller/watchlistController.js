@@ -1,6 +1,6 @@
 import { prisma } from "../config/db.js";
 
-const addToWatchlist = async (req, res) => {
+export const addToWatchlist = async (req, res) => {
   const { movieId, status, rating, notes } = req.body || {};
   const userId = req.user.id;
 
@@ -39,7 +39,7 @@ const addToWatchlist = async (req, res) => {
   });
 };
 
-const removeFromWatchlist = async (req, res) => {
+export const removeFromWatchlist = async (req, res) => {
   const { movieId } = req.body || {};
   const userId = req.user.id;
 
@@ -76,8 +76,8 @@ const removeFromWatchlist = async (req, res) => {
   });
 };
 
-const updateWatchlistItem = async (req, res) => {
-  const { status, rating, notes } = req.body || {};
+export const updateWatchlistItem = async (req, res) => {
+  const { movieId, status, rating, notes } = req.body || {};
   const userId = req.user.id;
 
   // Find watchlist item and verify ownership
@@ -108,17 +108,15 @@ const updateWatchlistItem = async (req, res) => {
     updateData.notes = notes;
   }
 
-  // Update watchlist item
-  const updatedWatchlistItem = await prisma.orm.public.WatchlistItem.update({
-    where: { id: watchlistItem.id },
-    data: updateData,
-  });
+  const updatedWatchlistItem = await prisma.orm.public.WatchlistItem.where({
+    id: watchlistItem.id,
+    userId,
+  }).update(updateData);
 
   res.status(200).json({
     status: "success",
     message: "Watchlist item updated",
-    data: updateData,
+    data: updatedWatchlistItem,
   });
 };
 
-export default { addToWatchlist, removeFromWatchlist, updateWatchlistItem };
